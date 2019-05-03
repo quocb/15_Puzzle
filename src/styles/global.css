@@ -62,11 +62,12 @@
   color: white;
   font-family: sans-serif;
   font-weight: bold;
-  position: absolute;
-  left: 38%;
-  top: 175px;
+  position: relative;
+  left: 20px;
+  top: 518px;
   font-size: 90px;
   letter-spacing: 4px;
+  margin-top: -372px;
 }
 @keyframes blinkingText {
   0% {
