@@ -1,0 +1,55 @@
+#main {
+  text-align: center;
+}
+
+#board {
+  text-align: initial;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 720px;
+  margin: auto;
+  margin-top: 50px;
+  border: rgb(0, 0, 0, 0.5) solid 1px;
+  padding-left: 5px;
+  padding-top: 5px;
+  border-radius: 5px;
+}
+
+#puzzle-image {
+}
+
+#empty-box {
+  background-color: gray;
+  width: 175px;
+  height: 175px;
+}
+
+.box-number {
+  position: relative;
+  top: 115px;
+  left: 75px;
+  color: red;
+  font-size: 50px;
+  margin-top: -60px;
+}
+
+.blinking {
+  animation: blinkingText 0.8s infinite;
+}
+@keyframes blinkingText {
+  0% {
+    color: red;
+  }
+  49% {
+    color: transparent;
+  }
+  50% {
+    color: transparent;
+  }
+  99% {
+    color: transparent;
+  }
+  100% {
+    color: red;
+  }
+}
