@@ -18,7 +18,7 @@ Using data and images made publicly available through the Unsplash API (https://
 
 1. Build using Gatsby and React Hooks.
 
-2. Deployed for CI/CD with AWS Amplify - https://master.d3lel14a7tw8el.amplifyapp.com/
+2. Deployed for CI/CD with AWS Amplify - http://bit.ly/QuocSlide
 
 3. Some random pictures are hard to make out so there is a `show numbers` button below the image that will display the order numbers on the boxes.
 
