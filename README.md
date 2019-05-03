@@ -23,3 +23,9 @@ Using data and images made publicly available through the Unsplash API (https://
 3. Some random pictures are hard to make out so there is a `show numbers` button below the image that will display the order numbers on the boxes.
 
 4. Puzzle is shuffled up to 25 times. To make the game easier harder or easier change the constant `SHUFFLE_BY` in `index.js`
+
+
+![alt text](https://i.imgur.com/nDC5kvt.jpg "Puzzle w/o numbers")
+
+
+![alt text](https://i.imgur.com/daPtdDK.jpg "Puzzle w/o numbers")
