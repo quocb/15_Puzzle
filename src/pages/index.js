@@ -1,13 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from './../components/Box';
-import Unsplash from 'unsplash-js';
 import axios from 'axios';
-
-const unsplash = new Unsplash({
-  applicationId:
-    '0bda86a0ab72412afc278690e4e71349ce98c99d967379b519408c88934559bf',
-  secret: '4ad0a00034f9a2cd24b2cb2642f580561e9e2d6d9bb79cb688fcab6e4f611c07',
-});
 
 /**
  * Main app component. Renders boxes.
@@ -16,18 +9,12 @@ const Index = () => {
   const SIZE = 700; // height/width of board
   const NUM_COLS = 4; // number of cols/rows to divide by
   const SHUFFLE_BY = 30; // number of times to shuffle board
-  console.log('before img useref');
-  const img = useRef();
-  const [boxesArr, setBoxesArr] = useState([]);
-  const [emptyPos, setEmptyPos] = useState([3, 3]);
-  const [clickedBox, setClickedBox] = useState();
-  const [gameWon, setGameWon] = useState(false);
-  const [showNums, setShowNums] = useState(true);
-  const [imageLoaded, setImageLoaded] = useState(true);
-  const [imgSrc, setImgSrc] = useState(
-    // 'https://source.unsplash.com/random/700x700'
-    'https://images.unsplash.com/photo-1555686422-f27082669831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=700&h=700&fit=crop&ixid=eyJhcHBfaWQiOjF9'
-  );
+  const [boxesArr, setBoxesArr] = useState([]); // state - arrays of all the boxes
+  const [emptyPos, setEmptyPos] = useState([3, 3]); // state - position of empty tile
+  const [clickedBox, setClickedBox] = useState(); // state - last clicked box
+  const [gameWon, setGameWon] = useState(false); // state - game won
+  const [showNums, setShowNums] = useState(false); // state - toggle showing numbers on tiles
+  const [imgSrc, setImgSrc] = useState(); // state - image src
 
   /**
    * getNewPos - Takes in a number 0-3 and returns a new valid position 0-3
@@ -68,7 +55,7 @@ const Index = () => {
       // swap empty col with new empty col
       [boxes[emptyRow][emptyCol], boxes[newRow][newCol]] = [
         boxes[newRow][newCol],
-        boxes[emptyRow][emptyCol],
+        boxes[emptyRow][emptyCol]
       ];
 
       // set where empty is
@@ -131,7 +118,7 @@ const Index = () => {
 
     [boxes[box1[0]][box1[1]], boxes[box2[0]][box2[1]]] = [
       boxes[box2[0]][box2[1]],
-      boxes[box1[0]][box1[1]],
+      boxes[box1[0]][box1[1]]
     ];
     setBoxesArr(boxes);
     setEmptyPos([box1[0], box1[1]]);
@@ -142,24 +129,23 @@ const Index = () => {
    */
   useEffect(() => {
     (async () => {
+      // fetch a random image URL from unsplash
       const result = await axios.get('https://api.unsplash.com/photos/random', {
         params: {
           client_id:
-            '0bda86a0ab72412afc278690e4e71349ce98c99d967379b519408c88934559bf',
-        },
+            '0bda86a0ab72412afc278690e4e71349ce98c99d967379b519408c88934559bf'
+        }
       });
-      console.log('loading image');
-      // setImgSrc(result.data.urls.regular);
-      // setImageLoaded(true);
+      // set the image url state variable
+      setImgSrc(result.data.urls.regular);
     })();
   }, []);
 
   /**
-   * useEffect (ComponentDidUpdate) - creates array of 15 box + 1 empty
+   * useEffect (ComponentDidUpdate) - creates array of 15 box + 1 empty when image is received
    */
   useEffect(() => {
-    if (imageLoaded) {
-      console.log('loading boxes');
+    if (imgSrc) {
       // container to hold arrays
       const boxes = [];
 
@@ -170,18 +156,25 @@ const Index = () => {
         for (let col = 0; col < NUM_COLS; col += 1) {
           if (row === NUM_COLS - 1 && col === NUM_COLS - 1) {
             // render empty div for last box
-            boxRow.push(<div key={`${row}${col}`} id="empty-box" />);
+            boxRow.push(
+              <div key={`${row}${col}`} id="empty-box">
+                <img
+                  src="https://i.imgur.com/CGdch5O.png"
+                  alt="The Farm Project"
+                  id="empty-img"
+                />
+              </div>
+            );
           } else {
-            // console.log(img.current);
             // define props for a box so we can spread them.
             const boxProps = {
               row,
               col,
               setClickedBox,
               showNums,
-              image: img.current,
+              image: imgSrc,
               boxSize: SIZE / NUM_COLS,
-              key: `${row}${col}`,
+              key: `${row}${col}`
             };
             boxRow.push(<Box {...boxProps} />);
           }
@@ -195,11 +188,11 @@ const Index = () => {
       // set the boxes into the state
       setBoxesArr(boxes);
     }
-  }, [imageLoaded]);
+  }, [imgSrc]);
 
   /**
-   * useEffect (ComponentDidUpdate) - whenever a box is clicked check
-   * 1. if box is next to empty
+   * useEffect (on clickedBox change)
+   * 1. check if clicked box is next to empty
    * 2. swap box with empty
    * 3. then check win condition
    */
@@ -215,41 +208,53 @@ const Index = () => {
     }
   }, [clickedBox]);
 
+  // Render component
   return (
     <div id="main">
       {gameWon ? <h1 className="blinking">You Won!</h1> : ''}
-      <button onClick={() => setShowNums(prev => !prev)}>Show Numbers</button>
-      <div id="board">
-        {boxesArr
-          ? boxesArr.map((boxRow, row) =>
-              boxRow.map((box, col) => {
-                const boxNum =
-                  parseInt(box.key[0]) * 4 + parseInt(box.key[1]) + 1;
-                return (
-                  <div
-                    key={box.key}
-                    id={`${row}${col}`}
-                    onClick={e => {
-                      setClickedBox([
-                        parseInt(e.currentTarget.id[0]),
-                        parseInt(e.currentTarget.id[1]),
-                      ]);
-                    }}
-                  >
-                    {boxNum < 16 && showNums ? (
-                      <div className="box-number">{boxNum}</div>
-                    ) : (
-                      ''
-                    )}
+      {!gameWon ? (
+        <div id="board">
+          {boxesArr
+            ? boxesArr.map((boxRow, row) =>
+                boxRow.map((box, col) => {
+                  const boxNum =
+                    parseInt(box.key[0]) * 4 + parseInt(box.key[1]) + 1;
+                  return (
+                    <div
+                      key={box.key}
+                      id={`${row}${col}`}
+                      onClick={e => {
+                        setClickedBox([
+                          parseInt(e.currentTarget.id[0]),
+                          parseInt(e.currentTarget.id[1])
+                        ]);
+                      }}
+                    >
+                      {boxNum < 16 && showNums ? (
+                        <div className="box-number">{boxNum}</div>
+                      ) : (
+                        ''
+                      )}
 
-                    {box}
-                  </div>
-                );
-              })
-            )
-          : ''}
-      </div>
-      <img ref={img} id="puzzle-image" alt="puzzle" src={imgSrc} />
+                      {box}
+                    </div>
+                  );
+                })
+              )
+            : ''}
+        </div>
+      ) : (
+        <img src={imgSrc} alt="Completed Image" id="complete-image" />
+      )}
+      {!gameWon ? (
+        <div>
+          <button id="show-num-btn" onClick={() => setShowNums(prev => !prev)}>
+            {showNums ? 'No' : 'Show'} Numbers
+          </button>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

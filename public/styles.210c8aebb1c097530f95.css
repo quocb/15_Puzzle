@@ -1,1 +1,0 @@
-#board{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;width:720px;margin:50px auto auto;border:1px solid rgba(0,0,0,.5);padding-left:5px;padding-top:5px;border-radius:5px}#puzzle-image{display:none}#empty-box{background-color:grey;width:175px;height:175px}
