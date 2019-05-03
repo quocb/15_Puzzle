@@ -1,5 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 
+/**
+ * Box component. Renders a single canvas / piece of the puzzle
+ */
 const Box = ({ image, boxSize, row, col }) => {
   const canvas = useRef();
   useEffect(() => {

@@ -2,8 +2,12 @@
   text-align: center;
 }
 
-#complete-image {
+#completed-image {
   width: 700px;
+  height: 700px;
+  overflow: hidden;
+  margin: auto;
+  margin-top: 50px;
 }
 
 #board {
@@ -38,32 +42,46 @@
   position: relative;
   top: 115px;
   left: 75px;
-  color: red;
   font-size: 50px;
   margin-top: -59px;
   margin-bottom: 0px;
   width: 50px;
   height: 59px;
   margin-right: -50px;
+  -webkit-text-stroke: 1px black;
+  color: white;
+  text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000,
+    -1px 1px 0 #000, 1px 1px 0 #000;
+  font-family: sans-serif;
+  font-weight: bold;
 }
 
 .blinking {
   animation: blinkingText 0.8s infinite;
+  -webkit-text-stroke: 1px black;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  position: absolute;
+  left: 38%;
+  top: 175px;
+  font-size: 90px;
+  letter-spacing: 4px;
 }
 @keyframes blinkingText {
   0% {
-    color: red;
+    visibility: visible;
   }
   49% {
-    color: transparent;
+    visibility: hidden;
   }
   50% {
-    color: transparent;
+    visibility: hidden;
   }
   99% {
-    color: transparent;
+    visibility: hidden;
   }
   100% {
-    color: red;
+    visibility: visible;
   }
 }

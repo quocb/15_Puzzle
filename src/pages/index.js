@@ -8,7 +8,7 @@ import axios from 'axios';
 const Index = () => {
   const SIZE = 700; // height/width of board
   const NUM_COLS = 4; // number of cols/rows to divide by
-  const SHUFFLE_BY = 30; // number of times to shuffle board
+  const SHUFFLE_BY = 25; // number of times to shuffle board
   const [boxesArr, setBoxesArr] = useState([]); // state - arrays of all the boxes
   const [emptyPos, setEmptyPos] = useState([3, 3]); // state - position of empty tile
   const [clickedBox, setClickedBox] = useState(); // state - last clicked box
@@ -211,7 +211,7 @@ const Index = () => {
   // Render component
   return (
     <div id="main">
-      {gameWon ? <h1 className="blinking">You Won!</h1> : ''}
+      {/* Show game board if not yet won. Completed image if won */}
       {!gameWon ? (
         <div id="board">
           {boxesArr
@@ -244,8 +244,16 @@ const Index = () => {
             : ''}
         </div>
       ) : (
-        <img src={imgSrc} alt="Completed Image" id="complete-image" />
+        <div id="completed-image">
+          <h1 className="blinking">
+            YOU <br />
+            DID <br />
+            IT!
+          </h1>
+          <img src={imgSrc} alt="Completed" />
+        </div>
       )}
+      {/* Hide show numbers button if game won */}
       {!gameWon ? (
         <div>
           <button id="show-num-btn" onClick={() => setShowNums(prev => !prev)}>
